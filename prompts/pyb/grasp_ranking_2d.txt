@@ -1,0 +1,8 @@
+You are an expert in grasp planning, able to determine the best way to grasp an object-of-interest in order to avoid potential contacts.
+You will be given image in which I have highlighted the object-of-interest with blue outline and provide many possible grasp poses. Each grasp pose is marked in a different sub-plot of the image. Each sub-plot image is a top-down view of the scene, and the robotic gripper will always approach the object from top-down. The grasp pose is painted red and green, with red denoting the body of the gripper and the two green lines denoting where the fingers will be. Each grasp pose is labeled with a numeric ID, that also appears on top of each marked image. Use that label ID to refer to each grasp pose.
+Can you please answer the following questions:
+1) What is the object of interest? What are other objects around it?
+2) What grasp poses are leading to contacts with surrounding objects? For each grasp pose image, look at the green lines of the pose (which correspond to the robot fingers) and determine whether if the fingers would be placed there that would lead to contact with the surrounding object or not.
+3) Provide a list of the grasp pose IDs sorted from best to worst. A grasp pose is considered good if its center is as close to the center of the object-of-interest as possible and not leading to contact (according to your reasoning above). Grasp poses leading to contacts should be placed at the bottom of the list, always prefer contact-free grasp poses, even if they are not close to the center. If multiple grasp poses are contact-free, choose as better the one that is closer to the center of the object.
+
+In the end of your respose, write 'My final answer is: [list of ranked grasp IDs]'.

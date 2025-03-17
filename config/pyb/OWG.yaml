@@ -1,0 +1,141 @@
+prompt_root_dir: './prompts'
+image_size_h: 448
+image_size_w: 448
+image_crop: null
+
+grounding:
+  prompt_name: 'pyb/referring_segmentation.txt'
+  prompt_template: "Description: {user_input}"
+
+  include_raw_image: True
+
+  use_subplot_prompt: False
+  subplot_size: 224
+  
+  do_refine_marks: False
+  refine_marks:
+    maximum_hole_area: 0.01
+    maximum_island_area: 0.01
+    minimum_mask_area: 0.02
+    maximum_mask_area: 1.0
+
+  do_inctx: False
+  inctx_prompt_name: null
+
+  visualizer:
+    label:
+      text_include: True
+      text_scale: 0.5
+      text_thickness: 2
+      text_padding: 2
+      text_position: 'TOP_CENTER'
+    box:
+      box_include: False
+      box_thickness: 2
+    mask:
+      mask_include: True
+      mask_opacity: 0.25
+    polygon:
+      polygon_include: True
+      polygon_thickness: 2
+
+  request:
+    model_name: 'gpt-4o'
+    detail: 'auto'
+    temperature: 0.00000001
+    n: 1
+    max_tokens: 512
+    seed: 12
+
+
+planning:
+  prompt_name: 'pyb/grasp_planning.txt'
+  prompt_template: 'Task instruction: "Target object {user_input}".'
+  response_format: 'json'
+
+  include_raw_image: False
+
+  use_subplot_prompt: False
+  subplot_size: 448
+
+  do_refine_marks: False
+  refine_marks:
+    maximum_hole_area: 0.01
+    maximum_island_area: 0.01
+    minimum_mask_area: 0.02
+    maximum_mask_area: 1.0
+
+  do_inctx: False
+  inctx_prompt_name: 'pyb/inctx_grasp_planning.pt'
+
+  visualizer:
+    label:
+      text_include: True
+      text_scale: 0.5
+      text_thickness: 2
+      text_padding: 2
+      text_position: 'CENTER_OF_MASS'
+    box:
+      box_include: False
+      box_thickness: 2
+    mask:
+      mask_include: True
+      mask_opacity: 0.25
+    polygon:
+      polygon_include: True
+      polygon_thickness: 1
+
+  request:
+    model_name: 'gpt-4o'
+    detail: 'auto'
+    temperature: 0.0
+    n: 1
+    max_tokens: 256
+
+
+grasping:
+  crop_square_size: 196
+
+  prompt_name: 'pyb/grasp_ranking_2d.txt'
+  prompt_template: "Rank the grasp poses."
+
+  use_3d_prompt: False
+  gripper_mesh_path: 'owg_robot/assets/robotiq_2f_140/robotiq_arg2f_140.obj'
+  use_subplot_prompt: True
+  subplot_size: 224
+
+  do_inctx: False
+  inctx_prompt_name: 'pyb/inctx_grasp_ranking.pt'
+
+  visualizer:
+    as_line: True
+    line_thickness: 8
+    grasp_colors: 'red,green'
+    with_gray: False
+    label:
+      label_include: False
+      text_color: 'white'
+      text_rect_color: 'black'
+      text_padding: 2
+      text_thickness: 1
+      text_scale: 0.7
+      text_position: 'CENTER'
+    box:
+      box_include: False
+      box_color: 'red'
+      box_thickness: 2
+    mask:
+      mask_include: False
+      mask_color: 'red'
+      mask_opacity: 0.15
+    polygon:
+      polygon_include: True
+      polygon_color: 'red'
+      polygon_thickness: 2
+
+  request:
+    model_name: 'gpt-4o'
+    detail: 'auto'
+    temperature: 0.0
+    n: 1
+    max_tokens: 8192

@@ -561,7 +561,7 @@ class LabelAnnotator:
                 if (labels is None or len(detections) != len(labels))
                 else labels[detection_idx]
             )
-            text = str(int(text)+1)
+            #text = str(int(text)+1)
             
             text_w, text_h = cv2.getTextSize(
                 text=text,
@@ -699,9 +699,9 @@ class MarkVisualizer:
             annotated_image = self.polygon_annotator.annotate(
                 scene=annotated_image, detections=marks)
         if with_label:
-            labels = list(map(str, range(len(marks))))
+            #labels = list(map(str, range(len(marks))))
             annotated_image = self.label_annotator.annotate(
-                scene=annotated_image, detections=marks, labels=labels)
+                scene=annotated_image, detections=marks)
         return annotated_image
 
 

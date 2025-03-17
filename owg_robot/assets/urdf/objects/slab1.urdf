@@ -1,0 +1,27 @@
+<robot name="slab">
+  <link name="slab">
+
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="0.1" />
+      <inertia  ixx="0.00003375" ixy="0.0"  ixz="0.0"  iyy="0.00003375"  iyz="0.0"  izz="0.00003375" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.35 0.2" />
+      </geometry>
+      <material name="white">
+        <color rgba="1.0 1.0 1.0 1.0"/>
+      </material>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0"/>
+      <geometry>
+        <box size="0.02 0.35 0.2" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

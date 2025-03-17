@@ -1,0 +1,7 @@
+You are given an image that displays different candidate grasp poses for picking up an object, with a unique grasp ID on top the corresponding sub-plot image.
+Rank the grasp poses from best to worst using the following criteria:
+ * The object is between the two fingers of the black gripper mesh.
+ * The black gripper mesh is not colliding with the target or any other neighbouring objects.
+ * The grasp pose is close to the center of the object.
+
+Finish your reply with: "My final answer is: [list of ranked grasp IDs]".

@@ -1,5 +1,15 @@
 import numpy as np
 import cv2
+from scipy.spatial.transform import Rotation as R
+
+def grasp_to_mat(g):
+    x, y, z, yaw, gripper_opening_length, obj_height = g
+    pos = [x,y,z]
+    rmat = R.from_euler('xyz', [yaw, np.pi/2, 0]).as_matrix()
+    T = np.eye(4)
+    T[:3,3] = pos
+    T[:3,:3] = rmat
+    return T
 
 
 class Grasp2D:
@@ -20,11 +30,13 @@ class Grasp2D:
         self._vector = None     # Will store the vector representation (x,y,w,h,theta)
 
     @classmethod
-    def from_vector(cls, x: float, y: float, w: float, h: float, theta: float, W: int, H: int, normalized: bool = True):
+    def from_vector(cls, x: float, y: float, w: float, h: float, theta: float, W: int, H: int, normalized: bool = True, line_offset=0.):
         """ Initialize the grasp from the vector representation. """
         grasp = cls(W, H, normalized)
-        grasp._vector = (x, y, w, h, theta)
-        grasp._rectangle = grasp._vector_to_rectangle(x, y, w, h, theta)
+        width = max(32, w+line_offset)
+        length = max(15, h+line_offset)
+        grasp._vector = (x, y, width, length, theta)
+        grasp._rectangle = grasp._vector_to_rectangle(x, y, width, length, theta)
         return grasp
 
     @classmethod

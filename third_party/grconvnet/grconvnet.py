@@ -9,6 +9,8 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import cv2
+from datetime import datetime
 
 DEPTH_RADIUS = 1
 IMG_SIZE = 224
@@ -103,7 +105,9 @@ class GraspGenerator:
         obj_height = self.DIST_BACKGROUND - z_p
 
         # return x, y, z, roll, opening length gripper
-        return robot_frame_ref[0], robot_frame_ref[1], robot_frame_ref[2], roll, opening_length, obj_height
+        robot_pose = robot_frame_ref[0], robot_frame_ref[1], robot_frame_ref[2], roll, opening_length, obj_height
+        grasp_2d = [grasp.center[0], grasp.center[1], roll, grasp.length, grasp.width]
+        return robot_pose, grasp_2d
 
     def post_process_output(self, q_img, cos_img, sin_img, width_img, pixels_max_grasp):
         """
@@ -158,9 +162,9 @@ class GraspGenerator:
         save_name = None
         if show_output:
             #fig = plt.figure(figsize=(10, 10))
-            im_bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
+            #im_bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
             plot = plot_results(self.fig,
-                                rgb_img=im_bgr,
+                                rgb_img=rgb,
                                 grasp_q_img=q_img,
                                 grasp_angle_img=ang_img,
                                 depth_img=depth,
@@ -179,19 +183,21 @@ class GraspGenerator:
 
     def predict_grasp(self, rgb, depth, n_grasps=1, show_output=False):
         predictions, save_name = self.predict(rgb, depth, n_grasps=n_grasps, show_output=show_output)
-        grasps = []
+        grasps, grasp_rects = [], []
         for grasp in predictions:
-            x, y, z, roll, opening_len, obj_height = self.grasp_to_robot_frame(grasp, depth)
-            grasps.append((x, y, z, roll, opening_len, obj_height))
-
-        return grasps, save_name
+            #cx, cy = grasp.center; angle, w, h = grasp.angle, grasp.width, grasp.length
+            #x, y, z, roll, opening_len, obj_height = self.grasp_to_robot_frame(grasp, depth)
+            grasp_pose, grasp_rect = self.grasp_to_robot_frame(grasp, depth)
+            grasps.append(grasp_pose)
+            grasp_rects.append(grasp_rect)
+        return grasps, grasp_rects, save_name
 
     def predict_grasp_from_mask(self, rgb, depth, mask, n_grasps=1, show_output=False):
         mask_3 = np.expand_dims(mask, 2).repeat(3, 2)
         mask_rgb = np.where(mask_3, rgb.copy(), np.ones_like(rgb) * 0xff)
         mask_d = np.where(mask, depth.copy(), np.ones_like(depth) * depth.max())
-        grasps, _ = self.predict_grasp(mask_rgb, mask_d, n_grasps, show_output)
-        return grasps
+        grasps3d, grasp_rects, _ = self.predict_grasp(mask_rgb, mask_d, n_grasps, show_output)
+        return grasps3d, grasp_rects
 
 
 def load_grasp_generator(camera, img_size=224, checkpoint="cornell-randsplit-rgbd-grconvnet3-drop1-ch32/epoch_19_iou_0.98"):

@@ -84,7 +84,7 @@ def prepare_prompt(
       # interleave response
       set_prompt['content'].append({
           'type': 'text',
-          'text': example['response']
+          'text': f"The answer should be: {example['response']}\n"
       })
     
   # add user prompt
@@ -130,7 +130,7 @@ def prepare_prompt(
 #     return set_user_prompt
 
 
-def compose_payload(images: List[np.ndarray], prompt: str, system_prompt: str, detail: str, temperature: float, max_tokens: int, n: int, model_name: str = "gpt-4o", in_context_examples: List[dict] = None, seed: Optional[int] = None) -> dict:
+def compose_payload(images: List[np.ndarray], prompt: str, system_prompt: str, detail: str, temperature: float, max_tokens: int, n: int, model_name: str = "gpt-4o", return_logprobs: bool = False, in_context_examples: List[dict] = None, seed: Optional[int] = None) -> dict:
     # Prepare system message
     system_msg = {
                 "role": "system",
@@ -148,6 +148,7 @@ def compose_payload(images: List[np.ndarray], prompt: str, system_prompt: str, d
         "max_tokens": max_tokens,
         "temperature": temperature,
         "n": n,
+        "logprobs": return_logprobs,
     }
     # reproducable output?
     if seed is not None:
@@ -155,7 +156,7 @@ def compose_payload(images: List[np.ndarray], prompt: str, system_prompt: str, d
     return payload
 
 
-def request_gpt(images: Union[np.ndarray, List[np.ndarray]], prompt: str, system_prompt: str, detail: str = "auto", temp: float = 0.0, n_tokens: int = 256, n: int = 1, in_context_examples: List[dict] = None, model_name: str = "gpt-4o", seed: Optional[int] = None) -> str:
+def request_gpt(images: Union[np.ndarray, List[np.ndarray]], prompt: str, system_prompt: str, detail: str = "auto", temp: float = 0.0, n_tokens: int = 256, n: int = 1, return_logprobs: bool = False, in_context_examples: List[dict] = None, model_name: str = "gpt-4o", seed: Optional[int] = None) -> str:
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {openai_api_key}"
@@ -165,7 +166,7 @@ def request_gpt(images: Union[np.ndarray, List[np.ndarray]], prompt: str, system
         assert isinstance(images, np.ndarray), "Provide either a numpy array, a PIL image, an image path string or a list of the above."
         images = [images]
     
-    payload = compose_payload(images=images, prompt=prompt, detail=detail, system_prompt=system_prompt, n=n, temperature=temp, max_tokens=n_tokens, in_context_examples=in_context_examples, model_name=model_name)
+    payload = compose_payload(images=images, prompt=prompt, detail=detail, system_prompt=system_prompt, n=n, temperature=temp, max_tokens=n_tokens, return_logprobs=return_logprobs, in_context_examples=in_context_examples, model_name=model_name)
     response = requests.post(url=API_URL, headers=headers, json=payload).json()
     
     if 'error' in response:

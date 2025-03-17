@@ -182,7 +182,7 @@ class GraspRectangles:
         if pad_to:
             if pad_to > len(self.grs):
                 a = np.concatenate((a, np.zeros((pad_to - len(self.grs), 4, 2))))
-        return a.astype(np.int)
+        return a.astype(np.int32)
 
     @property
     def center(self):
@@ -191,7 +191,7 @@ class GraspRectangles:
         :return: float, mean centre of all GraspRectangles
         """
         points = [gr.points for gr in self.grs]
-        return np.mean(np.vstack(points), axis=0).astype(np.int)
+        return np.mean(np.vstack(points), axis=0).astype(np.int32)
 
 
 class GraspRectangle:
@@ -226,7 +226,7 @@ class GraspRectangle:
         """
         :return: Rectangle center point
         """
-        return self.points.mean(axis=0).astype(np.int)
+        return self.points.mean(axis=0).astype(np.int32)
 
     @property
     def length(self):
@@ -314,7 +314,7 @@ class GraspRectangle:
             ]
         )
         c = np.array(center).reshape((1, 2))
-        self.points = ((np.dot(R, (self.points - c).T)).T + c).astype(np.int)
+        self.points = ((np.dot(R, (self.points - c).T)).T + c).astype(np.int32)
 
     def scale(self, factor):
         """
@@ -332,7 +332,7 @@ class GraspRectangle:
         :param color: matplotlib color code (optional)
         """
         points = np.vstack((self.points, self.points[0]))
-        ax.plot(points[:, 1], points[:, 0], color=color, lineWidth=3)
+        ax.plot(points[:, 1], points[:, 0], color=color, linewidth=3)
         ax.plot(self.center[1], self.center[0], 'o')
         ax.legend(['score: {0:.2f}'.format(q)])
 
@@ -349,7 +349,7 @@ class GraspRectangle:
             ]
         )
         c = np.array(center).reshape((1, 2))
-        self.points = ((np.dot(T, (self.points - c).T)).T + c).astype(np.int)
+        self.points = ((np.dot(T, (self.points - c).T)).T + c).astype(np.int32)
 
 
 class Grasp:
@@ -388,7 +388,7 @@ class Grasp:
                 [y2 + self.width / 2 * xo, x2 + self.width / 2 * yo],
                 [y1 + self.width / 2 * xo, x1 + self.width / 2 * yo],
             ]
-        ).astype(np.float))
+        ).astype(np.float32))
 
     def max_iou(self, grs):
         """

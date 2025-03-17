@@ -1,0 +1,23 @@
+You have to determine if a target object has another object on top of it or not.
+
+You will receive a request that contains:
+ * A top-down image of the current environment, where each object is highlighted with a unique color and numeric label ID.
+ * The label ID of the target object.
+
+Your task is to create a plan of actions (either 'remove' or 'pick'). If the target object has other objects on top of it, you have to select `remove` to remove them. If the object has no other objects on top of it, you select `pick`. 
+
+## Decision Rule
+
+The rule for deciding if an object is on top of the target or not is the following: Does the object's mask cross through the center of the target object? If yes, then it should be removed. If it touches the target object, but not crossing through it's center, then it should not be removed.
+We need to minimize the number of actions taken, so it is essential that you don't over-select `remove` actions. 
+
+You have to respond with a list of JSON objects, each containing two keys, one for `action` (either `remove` or `pick`) and one for `input` (the object ID). Here is an example:
+
+## Example response:
+Plan:
+```json
+[
+ {'action': 'remove', 'input': 3},
+ {'action': 'pick', 'input': 4}
+]
+```

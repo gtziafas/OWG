@@ -187,7 +187,7 @@ def create_subplot_image(images, w=448, h=448):
       axes[idx].axis('off')
 
   # Adjust layout to remove spaces between images
-  plt.subplots_adjust(wspace=0, hspace=0.3)
+  plt.subplots_adjust(wspace=0, hspace=0.5)
 
   # Save the figure to a BytesIO buffer
   buf = io.BytesIO()
@@ -203,6 +203,7 @@ def create_subplot_image(images, w=448, h=448):
 
 # helper function
 def display_image(path_or_array, size=(10, 10)):
+  plt.close()
   if isinstance(path_or_array, str):
     image = np.asarray(Image.open(open(image_path, 'rb')).convert("RGB"))
   else:

@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 import supervision as sv
 from enum import Enum
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 
 class MarkMode(Enum):
@@ -244,25 +244,28 @@ def adjust_mask_features_by_relative_area(
     return np.where(mask > 0, 1, 0).astype(bool)
 
 
-def masks_to_marks(masks: np.ndarray) -> sv.Detections:
+def masks_to_marks(masks: np.ndarray, labels: Optional[list] = None) -> sv.Detections:
     """
     Converts a set of masks to a marks (sv.Detections) object.
 
     Parameters:
         masks (np.ndarray): A 3D numpy array with shape `(N, H, W)`, where `N` is the
             number of masks, `H` is the height, and `W` is the width.
+        labels (Optional[list]): A list of label IDs for the markers. Default 1-indexing.
 
     Returns:
         sv.Detections: An object containing the masks and their bounding box
             coordinates.
     """
+    labels = list(range(1, len(masks)+1)) if labels is None else labels
     if len(masks) == 0:
         marks = sv.Detections.empty()
         marks.mask = np.empty((0, 0, 0), dtype=bool)
         return marks
     return sv.Detections(
         mask=masks,
-        xyxy=sv.mask_to_xyxy(masks=masks)
+        xyxy=sv.mask_to_xyxy(masks=masks),
+        class_id=np.asarray(labels),
     )
 
 
