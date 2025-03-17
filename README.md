@@ -10,14 +10,12 @@ cluttered indoor scene datasets to showcase OWG’s robustness in grounding from
 
 ## Release
 
-- >[Coming Soon]  Release a Pybullet environment that integrates OWG for online open-world grasping demos.
+- >[Coming Next]  Stay tuned for: Improved referring segmentation, Multi-cam grounding, 6-DoF Grasp Synthesis Model Integration, Task-Oriented Queries
+- [2025/17/03] 🔥 Release a Pybullet environment that integrates OWG for online open-world grasping demos.
 - [2024/11/04] 🔥 Release the source code and prompts for implementing all OWG components, as well as visualizations / evaluations in the OCID-VLG sub-set.
 
 ## Installation
-The code has been tested with `python3.8`. Create a virtual environment and install `torch` for your own CUDA driver from [here](https://pytorch.org/get-started/locally/). For example, for latest `torch` with CUDA driver 11.8:
-```
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
-```
+The code has been tested with `python3.9` with `torch` version 2.0 and CUDA driver 11.8. Create a virtual environment and install `torch` for your own CUDA driver from [here](https://pytorch.org/get-started/locally/). 
 
 Install local dependencies with 
 ```
@@ -36,6 +34,15 @@ export OPENAI_API_KEY=your_openai_key
 ## Open-Ended Grounding in OCID
 See [this example notebook](https://github.com/gtziafas/OWG/blob/main/notebooks/ocid_grounding.ipynb) for instructions on how to run inference and dataset evaluation in OCID-VLG scenes with the OWG grounder.
 
+
+## Pybullet Environment 
+We release a Pybullet-based environment for testing the OWG pipeline in grasping [YCB](https://www.ycbbenchmarks.com/) objects from open-ended language. Check [this notebook]() for more context in setting up the robot environment and motion primitives, and [this notebook]() for a step-by-step example of how to use OWG to control the robot in Pybullet. We develop a version of OWG as a closed-loop grasping policy and integrate everything together in `owg.ui`, which can be configured from `config/pyb/env.yaml`, while the OWG Policy settings can be configured from `config/pyb/OWG.yaml`. 
+
+To run a demo language-grasping trial, simply:
+```
+python demo.py --n_objects=10 --seed=42 --verbose=1 --vis=1
+```
+use the `vis` flag to visualize intermediate visual prompts to the VLM and `verbose` to print the VLM response in console. 
 
 ## Acknowledgements
 Our project is made possible due to following works:
