@@ -43,7 +43,7 @@ class OwgPolicy:
             marked_image_grounding = visual_promppt[-1]
             Image.fromarray(marked_image_grounding).show()
 
-        dets, _, target_ids = self.grounder.request(text_query=user_query,
+        dets, target_mask, target_ids = self.grounder.request(text_query=user_query,
                                                     image=image.copy(),
                                                     data=marker_data)
         try:
@@ -63,7 +63,10 @@ class OwgPolicy:
 
         try:
             obj_grasps = grasps[action['input']]
-            obj_mask = all_masks[list(grasps.keys()).index(action['input'])]
+            if action['action'] == 'pick':
+                obj_mask = target_mask
+            else:
+                obj_mask = all_masks[obj_ids.tolist().index(action['input'])]
         except IndexError:
             print(f'Object {action["input"]} not detected in image.')
             return {'action': 'fail'}
