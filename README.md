@@ -10,7 +10,7 @@ cluttered indoor scene datasets to showcase OWG’s robustness in grounding from
 
 ## Release
 
-- [Coming Soon]  Release a Pybullet environment that integrates OWG for online open-world grasping demos.
+- >[Coming Soon]  Release a Pybullet environment that integrates OWG for online open-world grasping demos.
 - [2024/11/04] 🔥 Release the source code and prompts for implementing all OWG components, as well as visualizations / evaluations in the OCID-VLG sub-set.
 
 ## Installation
@@ -19,7 +19,7 @@ The code has been tested with `python3.8`. Create a virtual environment and inst
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 ```
 
-Install local dependencies with
+Install local dependencies with 
 ```
 pip install -r requirements.txt
 ```
@@ -33,7 +33,7 @@ export OPENAI_API_KEY=your_openai_key
 ```
 
 
-## Open-Ended Referring Segmentation in OCID
+## Open-Ended Grounding in OCID
 See [this example notebook](https://github.com/gtziafas/OWG/blob/main/notebooks/ocid_grounding.ipynb) for instructions on how to run inference and dataset evaluation in OCID-VLG scenes with the OWG grounder.
 
 
