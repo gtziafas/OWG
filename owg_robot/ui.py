@@ -79,6 +79,7 @@ class RobotEnvUI:
         self.setup_grasps(obs, visualise_grasps=True)
 
         self.n_action_attempts = self.cfg.n_action_attempts
+        self.n_grasp_attempts = self.cfg.n_grasp_attempts
 
     def spawn(self, n_objects):
         self.n_objects = n_objects
@@ -144,7 +145,7 @@ class RobotEnvUI:
                     Image.fromarray(mask).resize((img_size, img_size),
                                                  Image.LANCZOS))
             grasps, grasp_rects = self.grasp_generator.predict_grasp_from_mask(
-                rgb, depth, mask, n_grasps=4, show_output=False)
+                rgb, depth, mask, n_grasps=self.n_grasp_attempts, show_output=False)
             if img_size != self.env.camera.width:
                 # normalize to original size
                 for j, gr in enumerate(grasp_rects):
