@@ -42,10 +42,6 @@ class OwgPolicy:
                 image.copy(), marker_data)
             marked_image_grounding = visual_promppt[-1]
             Image.fromarray(marked_image_grounding).show()
-            Image.fromarray(
-                visual_promppt[1]).save('./tmp/pyb_planning_ICL_2_marked.png')
-            Image.fromarray(
-                visual_promppt[0]).save('./tmp/pyb_planning_ICL_2_rgb.png')
 
         dets, _, target_ids = self.grounder.request(text_query=user_query,
                                                     image=image.copy(),
