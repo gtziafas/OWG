@@ -36,7 +36,7 @@ See [this example notebook](https://github.com/gtziafas/OWG/blob/main/notebooks/
 
 
 ## Pybullet Environment 
-We release a Pybullet-based environment for testing the OWG pipeline in grasping [YCB](https://www.ycbbenchmarks.com/) objects from open-ended language. Check [this notebook]() for more context in setting up the robot environment and motion primitives, and [this notebook]() for a step-by-step example of how to use OWG to control the robot in Pybullet. We develop a version of OWG as a closed-loop grasping policy and integrate everything together in `owg.ui`, which can be configured from `config/pyb/env.yaml`, while the OWG Policy settings can be configured from `config/pyb/OWG.yaml`. 
+We release a Pybullet-based environment for testing the OWG pipeline in grasping [YCB](https://www.ycbbenchmarks.com/) objects from open-ended language. Check [this notebook](https://github.com/gtziafas/OWG/blob/main/notebooks/setup_pyb_env_and_primitives.ipynb) for more context in setting up the robot environment and motion primitives, and [this notebook](https://github.com/gtziafas/OWG/blob/main/notebooks/pyb_owg_policy.ipynb) for a step-by-step example of how to use OWG to control the robot in Pybullet. We develop a version of OWG as a closed-loop grasping policy and integrate everything together in `owg.ui`, which can be configured from `config/pyb/env.yaml`, while the OWG Policy settings can be configured from `config/pyb/OWG.yaml`. 
 
 To run a demo language-grasping trial, simply:
 ```
